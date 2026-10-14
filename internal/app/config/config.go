@@ -10,9 +10,9 @@ import (
 )
 
 type Config struct {
-	Repository section.Repository `split_words:"true"`
-	Processor  section.Processor  `split_words:"true"`
-	Monitor    section.Monitor    `split_words:"true"`
+	Repository section.Repository
+	Processor  section.Processor
+	Monitor    section.Monitor
 }
 
 var Root Config
