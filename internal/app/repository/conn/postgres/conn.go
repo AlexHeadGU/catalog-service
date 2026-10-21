@@ -44,11 +44,15 @@ func NewClient(ctx context.Context, cfg section.RepositoryPostgres) (*Client, er
 	args := make(url.Values)
 	args.Set("sslmode", "disable")
 
-	args.Set("read_timeout", fmt.Sprintf("%d", int(cfg.ReadTimeout.Seconds())))
-	args.Set("write_timeout", fmt.Sprintf("%d", int(cfg.WriteTimeout.Seconds())))
 	u.RawQuery = args.Encode()
 
 	dsn := u.String()
+
+	connector := pgdriver.NewConnector(
+		pgdriver.WithDSN(dsn),
+		pgdriver.WithReadTimeout(cfg.ReadTimeout),
+		pgdriver.WithWriteTimeout(cfg.WriteTimeout),
+	)
 
 	log.Printf(
 		"read_timeout=%s write_timeout=%s",
@@ -56,7 +60,7 @@ func NewClient(ctx context.Context, cfg section.RepositoryPostgres) (*Client, er
 	)
 
 	// Шаг 2: Создаём sql.DB через pgdriver
-	sqlDB := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
+	sqlDB := sql.OpenDB(connector)
 	sqlDB.SetMaxOpenConns(10)
 
 	// Шаг 3: Создаём bun.DB
