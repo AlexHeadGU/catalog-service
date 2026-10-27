@@ -76,6 +76,7 @@ func (h *handler) Update(w http.ResponseWriter, r *http.Request) {
 	resp := entity.ResponseCategoryUpdate{
 		GUID:      category.GUID,
 		Name:      category.Name,
+		CreatedAt: category.CreatedAt,
 		UpdatedAt: category.UpdatedAt,
 	}
 

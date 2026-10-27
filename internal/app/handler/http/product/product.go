@@ -39,11 +39,13 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := entity.RequestProductCreate{
+	resp := entity.ResponseProductCreate{
+		GUID:         product.GUID,
 		Name:         product.Name,
 		Description:  product.Description,
 		Price:        product.Price,
 		CategoryGUID: product.CategoryGUID,
+		CreatedAt:    product.CreatedAt,
 	}
 
 	httph.SendJSON(w, http.StatusCreated, resp)
@@ -116,10 +118,10 @@ func (h *handler) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp := make([]entity.ResponseProductUpdate, len(products))
+	items := make([]entity.ResponseProductListItem, len(products))
 
 	for i, product := range products {
-		resp[i] = entity.ResponseProductUpdate{
+		items[i] = entity.ResponseProductListItem{
 			GUID:         product.GUID,
 			Name:         product.Name,
 			Description:  product.Description,
@@ -128,6 +130,10 @@ func (h *handler) List(w http.ResponseWriter, r *http.Request) {
 			CreatedAt:    product.CreatedAt,
 			UpdatedAt:    product.UpdatedAt,
 		}
+	}
+
+	resp := entity.ResponseProductList{
+		Data: items,
 	}
 
 	httph.SendJSON(w, http.StatusOK, resp)
