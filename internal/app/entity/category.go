@@ -47,7 +47,6 @@ type ResponseCategoryCreate struct {
 	GUID      uuid.UUID `json:"guid"`
 	Name      string    `json:"name"`
 	CreatedAt time.Time `json:"created_at"`
-	Price     interface{}
 }
 
 type ResponseCategoryUpdate struct {
