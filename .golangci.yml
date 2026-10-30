@@ -81,6 +81,9 @@ linters:
     errcheck:
       exclude-functions:
         - (io.Closer).Close
+    gosec:
+      excludes:
+        - G117
   exclusions:
     generated: lax
     paths:
